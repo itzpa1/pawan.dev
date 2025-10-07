@@ -10,16 +10,18 @@
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
+    "cloudinary": "^2.7.0",
     "framer-motion": "^11.3.21",
     "next": "^14.2.15",
+    "next-cloudinary": "^6.16.0",
     "react": "^18",
-    "react-icons": "^5.2.1",
     "react-dom": "^18",
+    "react-icons": "^5.2.1",
     "tailwind-merge": "^2.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18", 
+    "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",

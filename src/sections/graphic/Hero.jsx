@@ -3,8 +3,7 @@ import Image from "next/image";
 import SparkleIcon from "@/assets/icons/star.svg";
 import { HeroOrbit } from "@/components/HeroOrbit";
 import Link from "next/link";
-import { FaLocationPin } from "react-icons/fa6";
-import { FaGlobe } from "react-icons/fa";
+import { IoEarthOutline, IoLocationOutline } from "react-icons/io5";
 
 export const LeftSection = () => {
   return (
@@ -47,11 +46,11 @@ export const LeftSection = () => {
           <h1 className="text-3xl md:text-4xl font-bold">Hi👋, I&apos;m PAWAN</h1>
           <div className="flex gap-4 items-center">
             <p className="flex items-center gap-1 text-sm text-white font-medium">
-              <FaLocationPin />
+              <IoLocationOutline />
               India
             </p>
             <p className="flex items-center gap-1 text-sm text-white font-medium">
-              <FaGlobe />
+              <IoEarthOutline />
               Hindi, English
             </p>
           </div>
