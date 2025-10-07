@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { FaFolderOpen, FaHome, FaUser } from "react-icons/fa";
