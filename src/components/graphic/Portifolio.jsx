@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export const Portfolio = () => {
@@ -26,7 +27,7 @@ export const Portfolio = () => {
             key={image.id}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
-            <img
+            <Image
               src={image.url}
               alt={image.name}
               className="w-full h-64 object-cover"
