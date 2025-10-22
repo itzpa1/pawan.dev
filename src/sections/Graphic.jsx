@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Card } from "@/components/Card";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Graphic1 from "@/assets/graphics/graphic1.png";
 import Graphic2 from "@/assets/graphics/graphic2.png";
 import Graphic3 from "@/assets/graphics/graphic3.png";
@@ -77,6 +77,35 @@ const graphics = [
 
 export const GraphicsSection = () => {
   const router = useRouter();
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch("/api/images", {
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY || "dev-key",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch images");
+        }
+
+        const data = await response.json();
+        setImages(data);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        // Fallback to mock data if API fails
+        setImages(mockImages);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="py-16 lg:py-24 relative" id="graphic">
@@ -89,17 +118,23 @@ export const GraphicsSection = () => {
         <div className="flex gap-8 pr-8 flex-none animate-move-right [animation-duration:90s] hover:[animation-play-state:paused]">
           {[...new Array(2)].fill(0).map((_, idx) => (
             <Fragment key={idx}>
-              {graphics.map((item) => (
+              {images.map((item) => (
                 <Card
                   key={item.id}
-                  className="max-w-xs w-64 md:w-96 md:p-8 p-6 md:max-w-md hover:-rotate-3 transition duration-300"
+                  className="max-w-xs w-64 md:w-96 md:p-8 p-6 md:max-w-md hover:-rotate-3 transition duration-300 "
                 >
-                  <div className="w-full overflow-hidden aspect-[4/5] rounded-lg">
-                    <Image
-                      className="object-cover"
-                      src={item.image}
-                      alt={item.id}
-                    />
+                  <div className="overflow-hidden aspect-[4/5] rounded-lg flex">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {loading ? (
+                      <p className="font-semibold text-white/50">Loading..</p>
+                    ) : (
+                      <img
+                        src={item.thumbnail}
+                        alt={item.name}
+                        className="object-cover self-center rounded-lg"
+                        loading="lazy"
+                      />
+                    )}
                   </div>
                 </Card>
               ))}
@@ -109,7 +144,7 @@ export const GraphicsSection = () => {
       </div>
       <div className="w-full flex justify-center mt-6">
         <button
-          onClick={() => router.replace("/graphic")}
+          onClick={() => router.push("/graphic")}
           className="inline-flex items-center gap-2 px-3 md:px-6 bg-gradient-to-r from-emerald-300 to-sky-400 rounded-lg py-1 md:py-2 cursor-pointer"
         >
           <span className="font-medium text-gray-950">

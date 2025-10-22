@@ -13,7 +13,7 @@ export default function AdminPanel() {
   return (
     <div className="min-h-screen bg-gray-950">
       {/* Header */}
-      <header className="w-full mx-auto px-4 sm:px-6 lg:px-8 border border-white/15 bg-gray-950/50 z-10">
+      <header className="w-full mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/15 bg-gray-950/50 z-10">
         <div className="flex justify-between items-center py-6">
           <div>
             <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
