@@ -1,4 +1,5 @@
 import Avatar from "@/assets/images/user.png";
+import miniAvatar from "@/assets/images/userprofile.png";
 import Image from "next/image";
 import SparkleIcon from "@/assets/icons/sparkle.svg";
 import { HeroOrbit } from "@/components/HeroOrbit";
@@ -6,10 +7,11 @@ import Link from "next/link";
 import { IoEarthOutline, IoLocationOutline } from "react-icons/io5";
 import { MdMail } from "react-icons/md";
 import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
+import { TestimonialCards } from "@/sections/graphic/TestimonialCards";
 
 export const LeftSection = () => {
   return (
-    <div className="md:w-1/2  p-8 flex flex-col justify-center items-center md:sticky top-0 md:h-screen">
+    <div className="md:w-1/2  p-8 flex flex-col md:sticky top-0 md:h-screen">
       <div className="md:max-w-md flex flex-col items-center md:items-start pt-4 md:pt-0">
         <div className="size-[180px] relative rounded-full border-emerald-300/5 shadow-[0_0_80px_inset] shadow-emerald-300/5 flex items-center justify-center">
           <p className="md:hidden absolute left-1/2 -translate-x-1/2 top-1 font-bold text-3xl z-0 text-white/50">
@@ -28,6 +30,11 @@ export const LeftSection = () => {
           <Image
             src={Avatar}
             className="w-32 aspect-square rounded-full shadow-[0_0_80px_inset] shadow-emerald-300/5 z-10"
+            alt="user"
+          />
+          <Image
+            src={miniAvatar}
+            className="w-12 absolute bottom-4 right-6 aspect-square rounded-full border-4 border-white/10 z-10"
             alt="user"
           />
         </div>
@@ -97,6 +104,7 @@ export const LeftSection = () => {
           </p>
         </div>
       </div>
+      <TestimonialCards />
     </div>
   );
 };

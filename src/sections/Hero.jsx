@@ -1,3 +1,4 @@
+"use client";
 import memojiImage from "@/assets/images/memoji-computer.png";
 import Image from "next/image";
 import ArrowDown from "@/assets/icons/arrow-down.svg";
@@ -6,8 +7,28 @@ import StarIcon from "@/assets/icons/star.svg";
 import SparkleIcon from "@/assets/icons/sparkle.svg";
 import { HeroOrbit } from "@/components/HeroOrbit";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const HeroSection = () => {
+  const [resumeUrl, setResumeUrl] = useState("/resume.pdf");
+
+  useEffect(() => {
+    const fetchResume = async () => {
+      try {
+        const response = await fetch("/api/resume");
+        if (response.ok) {
+          const data = await response.json();
+          setResumeUrl(data.url);
+        }
+      } catch (error) {
+        console.error("Error fetching resume:", error);
+        // Fallback to static resume.pdf if API fails
+      }
+    };
+
+    fetchResume();
+  }, []);
+
   return (
     <div className="py-32 md:py-48 lg:py-60 relative z-0 overflow-x-clip">
       <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)]">
@@ -130,13 +151,16 @@ export const HeroSection = () => {
             <span className="font-semibold">Explore My Work</span>
             <ArrowDown className="size-4 animate-bounce duration-300 " />
           </button>
-          <Link
-            href={"#contact"}
-            className="inline-flex items-center gap-2 border-white bg-white text-gray-900 h-12 px-6 rounded-xl cursor-pointer "
+          <a
+            href={resumeUrl}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border-white bg-white text-gray-900 h-12 px-6 rounded-xl cursor-pointer z-20"
           >
-            <span>👋</span>
-            <span className="font-semibold">Let&apos;s Connect</span>
-          </Link>
+            <span>📄</span>
+            <span className="font-semibold">My Resume</span>
+          </a>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ export default function FileUpload() {
   const [uploadData, setUploadData] = useState({
     folder: "Portfolio/images",
     fileName: "",
+    imageCategory: "thumbnail", // logo, thumbnail, posters
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadResult, setUploadResult] = useState(null);
@@ -17,8 +18,14 @@ export default function FileUpload() {
 
   const folderOptions = [
     { value: "Portfolio/images", label: "Images", accept: "image/*" },
-    { value: "Portfolio/videos", label: "Videos", accept: "video/*" },
     { value: "Portfolio/pdfs", label: "PDFs", accept: ".pdf" },
+    { value: "Portfolio/resume", label: "Resume", accept: ".pdf" },
+  ];
+
+  const imageCategoryOptions = [
+    { value: "logo", label: "Logo" },
+    { value: "thumbnail", label: "Thumbnail" },
+    { value: "posters", label: "Posters" },
   ];
 
   const handleFileChange = (e) => {
@@ -60,7 +67,19 @@ export default function FileUpload() {
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      formData.append("folder", uploadData.folder);
+
+      // Construct full folder path with category for images
+      let finalFolder = uploadData.folder;
+      if (
+        uploadData.folder === "Portfolio/images" &&
+        uploadData.imageCategory
+      ) {
+        finalFolder = `${uploadData.folder}/${uploadData.imageCategory}`;
+      }
+      // Resume uploads don't need category
+      // PDFs go to Portfolio/pdfs directly
+
+      formData.append("folder", finalFolder);
       if (uploadData.fileName) {
         formData.append("fileName", uploadData.fileName);
       }
@@ -103,7 +122,6 @@ export default function FileUpload() {
 
   const getFileType = (type) => {
     if (type.startsWith("image/")) return "Image";
-    if (type.startsWith("video/")) return "Video";
     if (type === "application/pdf") return "PDF";
     return type;
   };
@@ -131,8 +149,39 @@ export default function FileUpload() {
                 </option>
               ))}
             </select>
+
+            {/* Image Category Dropdown - Only show for Images folder */}
+            {uploadData.folder === "Portfolio/images" && (
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-white mb-2">
+                  Image Category
+                </label>
+                <select
+                  value={uploadData.imageCategory}
+                  onChange={(e) =>
+                    setUploadData({
+                      ...uploadData,
+                      imageCategory: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 placeholder:text-gray-500 font-medium text-gray-950 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                >
+                  {imageCategoryOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <p className="text-sm text-white mt-1">
-              Files will be uploaded to: <strong>{uploadData.folder}</strong>
+              Files will be uploaded to:{" "}
+              <strong>
+                {uploadData.folder === "Portfolio/images"
+                  ? `${uploadData.folder}/${uploadData.imageCategory}`
+                  : uploadData.folder}
+              </strong>
             </p>
           </div>
 
@@ -292,15 +341,6 @@ export default function FileUpload() {
                 </div>
               )}
 
-              {filePreview.type.startsWith("video/") && (
-                <div className="flex w-full justify-center">
-                  <video controls className="max-w-full max-h-64 rounded-lg">
-                    <source src={filePreview.url} type={filePreview.type} />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              )}
-
               {filePreview.type === "application/pdf" && (
                 <div className="flex flex-col items-center justify-center p-6 bg-white/5 rounded-lg">
                   <svg
@@ -333,7 +373,6 @@ export default function FileUpload() {
               )}
 
               {!filePreview.type.startsWith("image/") &&
-                !filePreview.type.startsWith("video/") &&
                 filePreview.type !== "application/pdf" && (
                   <div className="flex flex-col items-center justify-center p-6 bg-white/5 rounded-lg">
                     <svg

@@ -1,0 +1,199 @@
+"use client";
+import { useEffect, useState } from "react";
+import { Header } from "@/sections/Header";
+import { Footer } from "@/sections/Footer";
+import { Card } from "@/components/Card";
+import { SectionHeader } from "@/components/SectionHeader";
+import { motion, AnimatePresence } from "framer-motion";
+import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
+import GithubIcon from "@/assets/icons/github.svg";
+import Image from "next/image";
+import { Projects } from "@/assets/assets";
+
+const PROJECTS_PER_PAGE = 6;
+
+export default function ProjectsPage() {
+  const [allProjects, setAllProjects] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchGitHubProjects() {
+      try {
+        const res = await fetch("/api/github-projects");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const githubData = await res.json();
+
+        // Deduplication logic:
+        const filteredGitHub = githubData.filter((ghProject) => {
+          return !Projects.some(
+            (dummy) =>
+              ghProject.demoLink === dummy.link ||
+              ghProject.githubLink === dummy.link ||
+              ghProject.name.toLowerCase() ===
+                dummy.title.toLowerCase().replace(/\s+/g, "-"),
+          );
+        });
+
+        const combined = [...Projects, ...filteredGitHub];
+        setAllProjects(combined);
+      } catch (error) {
+        console.error("Failed to fetch GitHub projects:", error);
+        setAllProjects(Projects);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchGitHubProjects();
+  }, []);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + PROJECTS_PER_PAGE);
+  };
+
+  const displayedProjects = allProjects.slice(0, visibleCount);
+  const hasMore = visibleCount < allProjects.length;
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col">
+      <Header />
+
+      <main className="flex-1 py-32 container mx-auto px-4 max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <SectionHeader
+            eyebrow="MY Project Hub"
+            title="My Projects Hub"
+            description="Explore my latest work and real-time contributions from GitHub. Dynamic, scalable, and built with passion."
+          />
+        </motion.div>
+
+        {loading ? (
+          <div className="mt-24 flex flex-col items-center justify-center gap-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-emerald-300 border-r-transparent"></div>
+            <p className="text-white/50 animate-pulse font-medium">
+              Syncing Projects...
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence mode="popLayout">
+                {displayedProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id || project.title}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <Card className="h-full flex flex-col group transition-all duration-300 border border-white/5 hover:border-emerald-300/50 hover:shadow-2xl hover:shadow-emerald-500/10">
+                      <div className="relative h-52 w-full overflow-hidden bg-white/5">
+                        {project.isDummy ? (
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                        ) : project.image ? (
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
+                            width={500}
+                            height={300}
+                            onError={(e) => {
+                              e.currentTarget.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-white/10 text-emerald-300/30 font-serif text-2xl uppercase tracking-widest">${project.name.charAt(0)}</div>`;
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-white/10 text-emerald-300/30 font-serif text-2xl uppercase tracking-widest">
+                            {project.name?.charAt(0) || "P"}
+                          </div>
+                        )}
+                        <div className="absolute top-4 right-4 bg-gray-900/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold border border-white/20 tracking-wider text-emerald-300 uppercase">
+                          {project.isDummy
+                            ? project.company
+                            : project.techStack?.[0] ||
+                              project.language ||
+                              "GitHub"}
+                        </div>
+                      </div>
+
+                      <div className="p-6 flex-1 flex flex-col">
+                        <div className="flex justify-between items-start mb-3">
+                          <h3 className="font-serif text-xl leading-tight group-hover:text-emerald-300 transition-colors uppercase tracking-wide">
+                            {project.title}
+                          </h3>
+                        </div>
+
+                        {!project.isDummy && project.techStack?.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {project.techStack.map((tech) => (
+                              <span
+                                key={tech}
+                                className="text-[10px] px-2 py-0.5 bg-white/5 border border-white/10 rounded-md text-white/50 uppercase tracking-tight"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="flex gap-3 mt-auto">
+                          {project.githubLink || project.repo ? (
+                            <a
+                              href={project.githubLink || project.repo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 bg-white/5 hover:bg-white/10 text-white h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-semibold transition-all border border-white/10 cursor-pointer"
+                            >
+                              <GithubIcon className="size-4" />
+                              Repo
+                            </a>
+                          ) : (
+                            <div className="flex-1 text-white/20 h-11 rounded-xl inline-flex items-center justify-center text-[10px] font-bold border border-white/5 uppercase">
+                              Legacy
+                            </div>
+                          )}
+                          <a
+                            href={project.demoLink || project.link || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10 cursor-pointer"
+                          >
+                            Live Site
+                            <ArrowUpRightIcon className="size-3" />
+                          </a>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {hasMore && (
+              <div className="mt-16 flex justify-center z-20 cursor-pointer">
+                <button
+                  onClick={handleLoadMore}
+                  className="bg-white/10 hover:bg-white/20 text-white px-10 py-3 rounded-full font-bold transition-all border border-white/10 cursor-pointer"
+                >
+                  Load More Projects
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

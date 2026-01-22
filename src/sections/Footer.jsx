@@ -50,7 +50,7 @@ export const Footer = () => {
           </nav>
         </div>
         <p className="border-t md:border-none border-white/15 py-6 text-sm flex justify-center items-center gap-1">
-          Made with <FaHeart color="red" /> by Pawan
+          Made with <FaHeart color="white" /> by Pawan
         </p>
       </div>
     </footer>

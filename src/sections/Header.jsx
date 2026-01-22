@@ -40,7 +40,7 @@ export const Header = () => {
             className={twMerge(
               link == "#graphic" &&
                 "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900 hover:cursor-pointer",
-              "nav-item flex gap-2 items-center"
+              "nav-item flex gap-2 items-center",
             )}
             key={name}
           >

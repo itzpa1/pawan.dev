@@ -104,7 +104,7 @@ export const Portfolio = () => {
     const fetchImages = async () => {
       if (USE_MOCK_DATA) {
         // Use mock data in development
-        console.log("Using mock data for development");
+        
         setTimeout(() => {
           setAllImages(mockImages);
           setDisplayedImages(mockImages.slice(0, IMAGES_PER_LOAD));
