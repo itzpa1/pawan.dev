@@ -13,6 +13,7 @@ const calistoga = Calistoga({
 export const metadata: Metadata = {
   title: "Portfolio | itzpa1",
   description: "Created with &lt; 3",
+  metadataBase: new URL("https://codeitzpa1.netlify.app"),
   icons: {
     icon: "./favicon.ico",
     apple: "./favicon.ico",

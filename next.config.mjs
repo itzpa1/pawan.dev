@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Add experimental features here if needed
-  },
-  turbopack: {}, // Silences the Turbopack warning/error when using custom webpack config
+  turbopack: {},
 
   webpack(config) {
     // 1. Find the existing rule that handles SVG imports
@@ -57,6 +54,7 @@ const nextConfig = {
       { protocol: "https", hostname: "img.shields.io" },
       { protocol: "https", hostname: "flagcdn.com" },
       { protocol: "https", hostname: "raw.githubusercontent.com" },
+      { protocol: "https", hostname: "github.com" },
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "komarev.com" },
     ],

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
+export function proxy(request) {
   // Skip API protection in development when using mock data
   if (process.env.NODE_ENV === 'development') {
     return NextResponse.next();
