@@ -191,7 +191,7 @@ export default function ProjectsPage() {
               <div className="mt-16 flex justify-center">
                 <button
                   onClick={handleLoadMore}
-                  className="bg-white/10 hover:bg-white/20 text-white px-10 py-3 rounded-full font-bold transition-all border border-white/10"
+                  className="bg-white/10 hover:bg-white/20 text-white px-10 py-3 rounded-full font-bold transition-all border border-white/10 cursor-pointer z-40"
                 >
                   Load More Projects
                 </button>
