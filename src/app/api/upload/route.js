@@ -1,17 +1,18 @@
-import cloudinary from '../../../../lib/cloudinary';
-import { NextResponse } from 'next/server';
+import cloudinary from "../../../../lib/cloudinary";
+import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
     const formData = await request.formData();
-    const file = formData.get('file');
-    const folder = formData.get('folder');
-    const fileName = formData.get('fileName');
+    const file = formData.get("file");
+    const folder = formData.get("folder");
+    const resourceType = formData.get("resourceType") || "auto";
+    const fileName = formData.get("fileName");
 
     if (!file || !folder) {
       return NextResponse.json(
-        { error: 'File and folder are required' },
-        { status: 400 }
+        { error: "File and folder are required" },
+        { status: 400 },
       );
     }
 
@@ -24,15 +25,15 @@ export async function POST(request) {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: folder,
-          resource_type: 'auto', // Automatically detect type
+          resource_type: resourceType, // Use custom resource type
           public_id: fileName || undefined,
         },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
-        }
+        },
       );
-      
+
       uploadStream.end(buffer);
     });
 
@@ -44,15 +45,11 @@ export async function POST(request) {
         type: result.resource_type,
         format: result.format,
         bytes: result.bytes,
-        folder: result.folder
-      }
+        folder: result.folder,
+      },
     });
-
   } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    console.error("Upload error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

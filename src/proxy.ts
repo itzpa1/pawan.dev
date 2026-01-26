@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_super_secret_key_change_me"
+  process.env.JWT_SECRET || "default_super_secret_key_change_me",
 );
 
-export async function middleware(request) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ✅ Allow login page

@@ -70,7 +70,7 @@ export default function MediaTab() {
                   key={item._id}
                   className="group relative bg-white/5 border border-white/10 rounded-xl overflow-hidden aspect-square hover:border-white/30 transition-all shadow-lg"
                 >
-                  {item.type === "image" ? (
+                  {item.type === "image" && item.format !== "pdf" ? (
                     <img
                       src={item.secureUrl}
                       alt={item.name}
@@ -106,7 +106,8 @@ export default function MediaTab() {
                         rel="noreferrer"
                         className="flex items-center gap-1.5 text-[9px] text-blue-400 hover:text-blue-300 transition-colors uppercase font-bold"
                       >
-                        Raw URL <FaExternalLinkAlt className="w-2 h-2" />
+                        {item.type === "raw" ? "Raw PDF" : "Full View"}{" "}
+                        <FaExternalLinkAlt className="w-2 h-2" />
                       </a>
                     </div>
                   </div>
@@ -143,7 +144,7 @@ export default function MediaTab() {
                     >
                       <td className="px-6 py-4">
                         <div className="w-12 h-10 rounded-md overflow-hidden bg-zinc-800 border border-white/10 flex items-center justify-center">
-                          {item.type === "image" ? (
+                          {item.type === "image" && item.format !== "pdf" ? (
                             <img
                               src={item.secureUrl}
                               alt=""

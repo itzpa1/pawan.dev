@@ -88,6 +88,11 @@ export default function FileUpload() {
         formData.append("fileName", uploadData.fileName);
       }
 
+      // Explicitly set resource_type for PDFs
+      if (selectedFile.type === "application/pdf") {
+        formData.append("resourceType", "raw");
+      }
+
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
