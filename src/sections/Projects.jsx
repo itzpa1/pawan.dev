@@ -1,12 +1,11 @@
 import Image from "next/image";
-import CheckCircleIcon from "@/assets/icons/check-circle.svg";
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Card } from "@/components/Card";
 import { Projects } from "@/assets/assets";
 import Link from "next/link";
 import { FaExternalLinkSquareAlt } from "react-icons/fa";
-
+import { MdCheckCircleOutline } from "react-icons/md";
+import { LuArrowUpRight } from "react-icons/lu";
 export const ProjectsSection = () => {
   return (
     <section className="pb-16 lg:py-24" id="project">
@@ -43,14 +42,14 @@ export const ProjectsSection = () => {
                         className="flex gap-2 text-sm md:text-base text-white/50 "
                         key={result.title}
                       >
-                        <CheckCircleIcon className="size-5 md:size-6" />
+                        <MdCheckCircleOutline className="size-5 md:size-6" />
                         <span>{result.title}</span>
                       </li>
                     ))}
                   </ul>
                   <a href={project.link}>
                     <button className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8 cursor-pointer">
-                      <ArrowUpRightIcon className="size-4" />
+                      <LuArrowUpRight className="size-4" />
                       <span>Visit Live Site</span>
                     </button>
                   </a>

@@ -20,6 +20,7 @@ export const RightSection = () => {
         if (!response.ok) throw new Error("Failed to fetch resources");
 
         const flattened = await response.json();
+        console.log(flattened)
 
         // Pick top 6 as recent (images only)
         const recent = flattened
@@ -32,7 +33,7 @@ export const RightSection = () => {
             if (item.category === "logo") acc.logos.push(item);
             else if (item.category === "thumbnail") acc.thumbnails.push(item);
             else if (item.category === "pdf") acc.pdfs.push(item);
-            else if (item.category === "poster") acc.posters.push(item);
+            else if (item.category === "posters") acc.posters.push(item);
             return acc;
           },
           { recent, logos: [], thumbnails: [], posters: [], pdfs: [] },

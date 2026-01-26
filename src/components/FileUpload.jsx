@@ -5,7 +5,13 @@ import Image from "next/image";
 import { MdUploadFile } from "react-icons/md";
 import Link from "next/link";
 
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { FaImage, FaUpload } from "react-icons/fa6";
+import { FaExternalLinkAlt, FaTrashAlt } from "react-icons/fa";
+
 export default function FileUpload() {
+  const addMedia = useMutation(api.media.add);
   const [uploading, setUploading] = useState(false);
   const [uploadData, setUploadData] = useState({
     folder: "Portfolio/images",
@@ -76,8 +82,6 @@ export default function FileUpload() {
       ) {
         finalFolder = `${uploadData.folder}/${uploadData.imageCategory}`;
       }
-      // Resume uploads don't need category
-      // PDFs go to Portfolio/pdfs directly
 
       formData.append("folder", finalFolder);
       if (uploadData.fileName) {
@@ -95,13 +99,28 @@ export default function FileUpload() {
         throw new Error(result.error);
       }
 
+      // SYNC TO CONVEX
+      await addMedia({
+        name: uploadData.fileName || selectedFile.name,
+        secureUrl: result.file.url,
+        publicId: result.file.id,
+        type: result.file.type,
+        format: result.file.format,
+        category:
+          uploadData.folder === "Portfolio/images"
+            ? uploadData.imageCategory
+            : uploadData.folder.split("/").pop(),
+        visible: true,
+      });
+
       setUploadResult({ success: true, data: result.file });
       setSelectedFile(null);
       setFilePreview(null);
       setUploadData((prev) => ({ ...prev, fileName: "" }));
 
       // Reset file input
-      document.getElementById("file-input").value = "";
+      const fileInput = document.getElementById("file-input");
+      if (fileInput) fileInput.value = "";
     } catch (error) {
       setUploadResult({ success: false, error: error.message });
     } finally {
@@ -127,283 +146,270 @@ export default function FileUpload() {
   };
 
   return (
-    <div className="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-4 gap-6">
-      <Card className="flex-1 w-full col-auto md:row-auto md:col-start-2 mx-auto p-6 shadow-md">
-        <h2 className="text-2xl font-bold text-white mb-6">Upload Files</h2>
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <Card className="lg:col-span-2 p-6 bg-white/5 border-white/10">
+        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <FaUpload className="text-blue-400" /> New Upload
+        </h3>
         <form onSubmit={handleUpload} className="space-y-6">
-          {/* Folder Selection */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Target Folder
-            </label>
-            <select
-              value={uploadData.folder}
-              onChange={(e) =>
-                setUploadData({ ...uploadData, folder: e.target.value })
-              }
-              className="w-full border border-gray-300 rounded-md px-3 py-2 placeholder:text-gray-500 font-medium text-gray-950 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-            >
-              {folderOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+                Destination Pool
+              </label>
+              <select
+                value={uploadData.folder}
+                onChange={(e) =>
+                  setUploadData({ ...uploadData, folder: e.target.value })
+                }
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer"
+              >
+                {folderOptions.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                    className="bg-zinc-900"
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            {/* Image Category Dropdown - Only show for Images folder */}
             {uploadData.folder === "Portfolio/images" && (
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-white mb-2">
-                  Image Category
+              <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+                  Image Context
                 </label>
-                <select
-                  value={uploadData.imageCategory}
-                  onChange={(e) =>
-                    setUploadData({
-                      ...uploadData,
-                      imageCategory: e.target.value,
-                    })
-                  }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 placeholder:text-gray-500 font-medium text-gray-950 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-                >
+                <div className="grid grid-cols-3 gap-2">
                   {imageCategoryOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() =>
+                        setUploadData({
+                          ...uploadData,
+                          imageCategory: option.value,
+                        })
+                      }
+                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+                        uploadData.imageCategory === option.value
+                          ? "bg-blue-600/20 border-blue-500 text-blue-400"
+                          : "bg-white/5 border-white/10 text-white/40 hover:border-white/20"
+                      }`}
+                    >
                       {option.label}
-                    </option>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             )}
 
-            <p className="text-sm text-white mt-1">
-              Files will be uploaded to:{" "}
-              <strong>
-                {uploadData.folder === "Portfolio/images"
-                  ? `${uploadData.folder}/${uploadData.imageCategory}`
-                  : uploadData.folder}
-              </strong>
-            </p>
+            <div>
+              <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+                Identifier (Optional)
+              </label>
+              <input
+                type="text"
+                value={uploadData.fileName}
+                onChange={(e) =>
+                  setUploadData({ ...uploadData, fileName: e.target.value })
+                }
+                placeholder="Auto-generated if empty"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-mono text-sm"
+              />
+            </div>
+
+            <div className="pt-2">
+              <label className="group relative flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all cursor-pointer overflow-hidden">
+                <div className="flex flex-col items-center justify-center py-4">
+                  <FaImage
+                    className={`w-8 h-8 mb-2 transition-transform group-hover:scale-110 ${selectedFile ? "text-blue-400" : "text-white/20"}`}
+                  />
+                  <p className="text-sm font-medium text-white/60">
+                    {selectedFile ? selectedFile.name : "Choose or drag file"}
+                  </p>
+                  <p className="text-[10px] text-white/30 mt-1">
+                    {selectedFile
+                      ? formatFileSize(selectedFile.size)
+                      : "Max 10MB"}
+                  </p>
+                </div>
+                <input
+                  id="file-input"
+                  type="file"
+                  accept={getCurrentAccept()}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </div>
 
-          {/* File Name (Optional) */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Custom File Name (Optional)
-            </label>
-            <input
-              type="text"
-              value={uploadData.fileName}
-              onChange={(e) =>
-                setUploadData({ ...uploadData, fileName: e.target.value })
-              }
-              placeholder="Leave empty to use original filename"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 placeholder:text-gray-500 text-gray-950 font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-            />
-          </div>
-
-          {/* File Input */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Select File
-            </label>
-            <input
-              id="file-input"
-              type="file"
-              accept={getCurrentAccept()}
-              onChange={handleFileChange}
-              className="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-gray-900 hover:file:bg-indigo-100"
-            />
-          </div>
-
-          {/* Upload Button */}
           <button
             type="submit"
             disabled={uploading || !selectedFile}
-            className="w-full bg-indigo-600 text-white py-3 px-4 rounded-md font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:scale-100 active:scale-95"
           >
             {uploading ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Uploading...
+              <div className="flex items-center justify-center gap-3">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white"></div>
+                Initializing...
               </div>
             ) : (
-              "Upload File"
+              "Initialize Upload"
             )}
           </button>
         </form>
 
-        {/* Upload Result */}
         {uploadResult && (
           <div
-            className={`mt-6 p-4 rounded-md ${
+            className={`mt-6 p-4 rounded-xl border animate-in slide-in-from-bottom-2 duration-300 ${
               uploadResult.success
-                ? "bg-green-50 border border-green-200"
-                : "bg-red-50 border border-red-200"
+                ? "bg-green-500/10 border-green-500/20 text-green-400"
+                : "bg-red-500/10 border-red-500/20 text-red-400"
             }`}
           >
-            {uploadResult.success ? (
-              <div className="">
-                <div className="flex items-center">
-                  <svg
-                    className="w-5 h-5 text-green-500 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <h3 className="text-green-800 font-medium">
-                    Upload Successful!
-                  </h3>
-                </div>
-                <div className="mt-2 text-sm text-green-700">
-                  <p className="flex gap-0.5">
-                    <strong>URL:</strong>{" "}
-                    <Link
-                      href={uploadResult.data.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline line-clamp-1 text-ellipsis"
+            <div className="flex items-center gap-3">
+              {uploadResult.success ? (
+                <>
+                  <div className="bg-green-500 rounded-full p-1 text-black">
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      {uploadResult.data.url}
-                    </Link>
-                  </p>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-xs font-medium">
+                    Synced successfully to Convex.
+                  </div>
+                  <Link
+                    href={uploadResult.data.url}
+                    target="_blank"
+                    className="text-[10px] underline translate-y-px"
+                  >
+                    View
+                  </Link>
+                </>
+              ) : (
+                <div className="text-xs font-medium">
+                  Error: {uploadResult.error}
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <svg
-                  className="w-5 h-5 text-red-500 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div>
-                  <h3 className="text-red-800 font-medium">Upload Failed</h3>
-                  <p className="text-sm text-red-700 mt-1">
-                    {uploadResult.error}
-                  </p>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
       </Card>
 
-      {/* Preview Card */}
-      <Card
-        className={"flex-1 col-auto md:row-auto md:col-start-3 p-6 shadow-md"}
-      >
-        <h1 className="text-2xl font-bold text-white">Preview</h1>
-        {selectedFile && (
-          <p className="text-white/80 font-medium grid grid-cols-3">
-            <span className="text-ellipsis line-clamp-1 col-span-2">
-              {selectedFile.name}
-            </span>{" "}
-            <span className="col-span-1 ">
-              &bull; ({formatFileSize(selectedFile.size)})
-            </span>
-          </p>
-        )}
+      <Card className="lg:col-span-3 p-6 bg-white/5 border-white/10 flex flex-col min-h-[400px]">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <FaImage className="text-blue-400" /> Live Preview
+          </h3>
+          {selectedFile && (
+            <button
+              onClick={() => {
+                setSelectedFile(null);
+                setFilePreview(null);
+              }}
+              className="text-white/40 hover:text-white transition-colors"
+            >
+              <FaTrashAlt className="w-4 h-4" />
+            </button>
+          )}
+        </div>
 
         {filePreview ? (
-          <div className="my-4 flex-1">
-            {/* Preview Content */}
-            <div className="p-4 rounded-lg">
-              {filePreview.type.startsWith("image/") && (
-                <div className="flex justify-center">
-                  {filePreview.url.startsWith("blob:") ? (
-                    // Use img for blob URLs
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={filePreview.url}
-                      alt="Preview"
-                      className="max-w-full max-h-64 object-contain rounded-lg"
-                    />
-                  ) : (
-                    // Use Next.js Image for regular URLs (after upload)
-                    <Image
-                      src={filePreview.url}
-                      alt="Preview"
-                      width={400}
-                      height={300}
-                      className="max-w-full max-h-64 object-contain rounded-lg"
-                    />
-                  )}
-                </div>
-              )}
-
-              {filePreview.type === "application/pdf" && (
-                <div className="flex flex-col items-center justify-center p-6 bg-white/5 rounded-lg">
-                  <svg
-                    className="w-16 h-16 text-red-400 mb-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p className="text-white text-center">
-                    PDF Preview
-                    <br />
-                    <span className="text-sm text-white/60">
-                      (Preview will be available after upload)
-                    </span>
+          <div className="flex-1 flex flex-col">
+            <div className="flex-1 bg-black/40 rounded-2xl border border-white/5 p-4 flex items-center justify-center overflow-hidden">
+              {filePreview.type.startsWith("image/") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={filePreview.url}
+                  alt="Preview"
+                  className="max-w-full max-h-[300px] object-contain rounded-lg drop-shadow-2xl animate-in zoom-in duration-500"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-8 text-center animate-in zoom-in duration-500">
+                  <div className="w-20 h-20 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-4 border border-red-500/20">
+                    <svg
+                      className="w-10 h-10"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <h4 className="font-bold text-white mb-1 uppercase tracking-wider text-sm">
+                    Document Preview
+                  </h4>
+                  <p className="text-white/40 text-xs mb-4">
+                    Meta data validation successful
                   </p>
                   <a
                     href={filePreview.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-2"
                   >
-                    Open PDF
+                    Open Full PDF <FaExternalLinkAlt className="w-3 h-3" />
                   </a>
                 </div>
               )}
+            </div>
 
-              {!filePreview.type.startsWith("image/") &&
-                filePreview.type !== "application/pdf" && (
-                  <div className="flex flex-col items-center justify-center p-6 bg-white/5 rounded-lg">
-                    <svg
-                      className="w-16 h-16 text-gray-400 mb-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    <p className="text-white text-center">
-                      File Preview
-                      <br />
-                      <span className="text-sm text-white/60">
-                        No preview available for this file type
-                      </span>
-                    </p>
-                  </div>
-                )}
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                <p className="text-[10px] text-white/40 uppercase font-bold mb-1">
+                  MIME
+                </p>
+                <p className="text-xs text-white truncate">
+                  {filePreview.type}
+                </p>
+              </div>
+              <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                <p className="text-[10px] text-white/40 uppercase font-bold mb-1">
+                  Size
+                </p>
+                <p className="text-xs text-white uppercase">
+                  {formatFileSize(filePreview.size)}
+                </p>
+              </div>
+              <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                <p className="text-[10px] text-white/40 uppercase font-bold mb-1">
+                  Type
+                </p>
+                <p className="text-xs text-white">
+                  {getFileType(filePreview.type)}
+                </p>
+              </div>
+              <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                <p className="text-[10px] text-white/40 uppercase font-bold mb-1">
+                  Status
+                </p>
+                <p className="text-xs text-yellow-500 font-bold">STAGED</p>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col self-center items-center justify-center h-[80%] bg-white/5 rounded-lg border-2 border-dashed border-white/20">
-            <MdUploadFile className="text-white/60" size={"40"} />
-            <p className="text-white/60 text-center">
-              Select a file to see preview
+          <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-2xl bg-black/20">
+            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-white/10 mb-4 animate-pulse">
+              <MdUploadFile size="48" />
+            </div>
+            <p className="text-white/30 text-sm font-medium">
+              Awaiting file selection...
             </p>
           </div>
         )}

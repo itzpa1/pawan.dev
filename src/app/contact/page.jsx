@@ -5,14 +5,14 @@ import { Footer } from "@/sections/Footer";
 import { Card } from "@/components/Card";
 import { CardHeader } from "@/components/CardHeader";
 import Image from "next/image";
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
 import grainImage from "@/assets/images/grain.jpg";
 import mapImage from "@/assets/images/map.png";
 import smileEmoji from "@/assets/images/memoji-smile.png";
-import { FaInstagram} from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa6";
 import Link from "next/link";
 import { FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
+import { LuArrowUpRight } from "react-icons/lu";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -145,7 +145,7 @@ export default function ContactPage() {
               )}
 
               <form
-                className={`flex-1 flex flex-col gap-6 md:gap-4 z-40 ${submitted ? "hidden" : ""}`}
+                className={`flex-1 flex flex-col gap-6 md:gap-4 z-50 ${submitted ? "hidden" : ""}`}
                 action="https://docs.google.com/forms/d/e/1FAIpQLSdVQJCyyFalNe6-2xP3bdGIXYFz7bQZAZnZT4XKQa6SxLQ2aw/formResponse"
                 method="POST"
                 target="hidden_iframe"
@@ -204,10 +204,10 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="mt-auto bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-900 font-bold px-6 h-12 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/20 uppercase text-sm cursor-pointer"
+                  className="mt-auto bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-900 font-bold px-6 h-12 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/20 uppercase text-sm cursor-pointer z-50"
                 >
                   Send Message
-                  <ArrowUpRightIcon className="size-5" />
+                  <LuArrowUpRight className="size-5" />
                 </button>
               </form>
               {/* Hidden Iframe to bypass redirect */}

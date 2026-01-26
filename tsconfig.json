@@ -44,7 +44,7 @@
     "src/sections/Hero.jsx",
     "tailwind.config.js",
     ".next/dev/types/**/*.ts"
-  ],
+, "src/middleware.s", "src/proxy.ts"  ],
   "exclude": [
     "node_modules"
   ]

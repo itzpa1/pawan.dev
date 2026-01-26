@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from "react";
 import { FaExternalLinkSquareAlt } from "react-icons/fa";
 import Link from "next/link";
 import { Skeleton } from "@/components/Skeleton";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
 
 export const GraphicsSection = () => {
   const [images, setImages] = useState([]);
@@ -23,10 +24,10 @@ export const GraphicsSection = () => {
         }
 
         const data = await response.json();
-        // Filter out PDFs
-        const filteredImages = data.filter(
-          (item) => item.category !== "pdf" && item.format !== "pdf",
-        );
+        // Filter out PDFs and limit to first 6 images
+        const filteredImages = (data || [])
+          .filter((item) => item.category !== "pdf" && item.format !== "pdf")
+          .slice(0, 6); // Apply slice here to limit to 6 images
         setImages(filteredImages);
       } catch (error) {
         console.error("Error fetching images:", error);

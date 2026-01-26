@@ -73,7 +73,7 @@ export const AboutSection = () => {
                       drag
                       dragConstraints={constraintRef}
                     >
-                      <span className="font-medium text-gray-950">
+                      <span className="font-medium text-gray-950 line-clamp-1">
                         {toolboxItem.title}
                       </span>
                       <IconComponent className="size-5 text-gray-950" />

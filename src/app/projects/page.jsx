@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import { Header } from "@/sections/Header";
 import { Footer } from "@/sections/Footer";
 import { Card } from "@/components/Card";
 import { SectionHeader } from "@/components/SectionHeader";
 import { motion, AnimatePresence } from "framer-motion";
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
-import GithubIcon from "@/assets/icons/github.svg";
 import Image from "next/image";
-import { Projects } from "@/assets/assets";
+import { useState } from "react";
+import { FaGithub } from "react-icons/fa6";
+import { LuArrowUpRight } from "react-icons/lu";
 
 const PROJECTS_PER_PAGE = 6;
 
@@ -18,18 +19,19 @@ const PROJECTS_PER_PAGE = 6;
 --------------------------------------------- */
 function ProjectImage({ project }) {
   const [imgError, setImgError] = useState(false);
+  const thumbnail = project.thumbnail || project.image;
 
-  if (!project.image || imgError) {
+  if (!thumbnail || imgError) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-white/10 text-emerald-300/30 font-serif text-2xl uppercase tracking-widest">
-        {project.name?.charAt(0) || project.title?.charAt(0) || "P"}
+        {project.title?.charAt(0) || "P"}
       </div>
     );
   }
 
   return (
     <Image
-      src={project.image}
+      src={thumbnail}
       alt={project.title}
       width={500}
       height={300}
@@ -42,41 +44,15 @@ function ProjectImage({ project }) {
 }
 
 export default function ProjectsPage() {
-  const [allProjects, setAllProjects] = useState([]);
+  const convexProjects = useQuery(api.projects.get);
   const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchGitHubProjects() {
-      try {
-        const res = await fetch("/api/github-projects");
-        if (!res.ok) throw new Error("Failed to fetch");
+  const loading = convexProjects === undefined;
 
-        const githubData = await res.json();
-
-        const filteredGitHub = githubData.filter((ghProject) => {
-          return !Projects.some(
-            (dummy) =>
-              ghProject.demoLink === dummy.link ||
-              ghProject.githubLink === dummy.link ||
-              ghProject.name
-                ?.toLowerCase()
-                ?.replace(/\s+/g, "-") ===
-                dummy.title?.toLowerCase()?.replace(/\s+/g, "-"),
-          );
-        });
-
-        setAllProjects([...Projects, ...filteredGitHub]);
-      } catch (error) {
-        console.error("Failed to fetch GitHub projects:", error);
-        setAllProjects(Projects);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchGitHubProjects();
-  }, []);
+  // Only show visible projects
+  const allProjects = convexProjects
+    ? convexProjects.filter((p) => p.visible !== false)
+    : [];
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + PROJECTS_PER_PAGE);
@@ -96,9 +72,9 @@ export default function ProjectsPage() {
           transition={{ duration: 0.5 }}
         >
           <SectionHeader
-            eyebrow="MY Project Hub"
+            eyebrow="Portfolio"
             title="My Projects Hub"
-            description="Explore my latest work and real-time contributions from GitHub."
+            description="Explore my latest work and professional projects stored on Convex."
           />
         </motion.div>
 
@@ -106,7 +82,7 @@ export default function ProjectsPage() {
           <div className="mt-24 flex flex-col items-center justify-center gap-4">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-emerald-300 border-r-transparent"></div>
             <p className="text-white/50 animate-pulse font-medium">
-              Syncing Projects...
+              Loading Projects...
             </p>
           </div>
         ) : (
@@ -115,7 +91,7 @@ export default function ProjectsPage() {
               <AnimatePresence mode="popLayout">
                 {displayedProjects.map((project) => (
                   <motion.div
-                    key={project.id || project.title}
+                    key={project._id}
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -127,11 +103,7 @@ export default function ProjectsPage() {
                         <ProjectImage project={project} />
 
                         <div className="absolute top-4 right-4 bg-gray-900/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold border border-white/20 tracking-wider text-emerald-300 uppercase">
-                          {project.isDummy
-                            ? project.company
-                            : project.techStack?.[0] ||
-                              project.language ||
-                              "GitHub"}
+                          {project.techStack?.[0] || "Project"}
                         </div>
                       </div>
 
@@ -140,7 +112,7 @@ export default function ProjectsPage() {
                           {project.title}
                         </h3>
 
-                        {!project.isDummy && project.techStack?.length > 0 && (
+                        {project.techStack?.length > 0 && (
                           <div className="flex flex-wrap gap-2 mb-6">
                             {project.techStack.map((tech) => (
                               <span
@@ -154,30 +126,30 @@ export default function ProjectsPage() {
                         )}
 
                         <div className="flex gap-3 mt-auto">
-                          {project.githubLink || project.repo ? (
+                          {project.repoUrl ? (
                             <a
-                              href={project.githubLink || project.repo}
+                              href={project.repoUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex-1 bg-white/5 hover:bg-white/10 text-white h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-semibold transition-all border border-white/10"
                             >
-                              <GithubIcon className="size-4" />
+                              <FaGithub className="size-4" />
                               Repo
                             </a>
                           ) : (
                             <div className="flex-1 text-white/20 h-11 rounded-xl inline-flex items-center justify-center text-[10px] font-bold border border-white/5 uppercase">
-                              Legacy
+                              Private
                             </div>
                           )}
 
                           <a
-                            href={project.demoLink || project.link || "#"}
+                            href={project.demoUrl || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex-1 bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10"
                           >
                             Live Site
-                            <ArrowUpRightIcon className="size-3" />
+                            <LuArrowUpRight className="size-3" />
                           </a>
                         </div>
                       </div>
@@ -186,6 +158,12 @@ export default function ProjectsPage() {
                 ))}
               </AnimatePresence>
             </div>
+
+            {displayedProjects.length === 0 && (
+              <div className="mt-24 text-center">
+                <p className="text-white/50">No projects found.</p>
+              </div>
+            )}
 
             {hasMore && (
               <div className="mt-16 flex justify-center">

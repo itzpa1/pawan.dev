@@ -1,29 +1,36 @@
 "use client";
-import { useState } from "react";
-import AdminLogin from "@/components/Login";
-import FileUpload from "@/components/FileUpload";
+import AdminTabs from "@/components/admin/AdminTabs";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AdminPanel() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
 
-  if (!isAuthenticated) {
-    return <AdminLogin onLogin={setIsAuthenticated} />;
-  }
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      router.push("/admin/login");
+      router.refresh();
+      toast.success("Logged out");
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Logout failed");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
-      <header className="w-full mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/15 bg-gray-950/50 z-10">
-        <div className="flex justify-between items-center py-6">
+      <header className="w-full mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-gray-950/50 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex justify-between items-center py-4">
           <div>
-            <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
-            <p className="text-white/80 hidden md:inline-flex">
-              Upload files to Cloudinary folders
-            </p>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-sky-500 text-transparent bg-clip-text">
+              Admin Dashboard
+            </h1>
           </div>
           <button
-            onClick={() => setIsAuthenticated(false)}
-            className="bg-white hover:bg-white/70 text-gray-900 px-4 py-2 rounded-md font-medium"
+            onClick={handleLogout}
+            className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           >
             Logout
           </button>
@@ -31,10 +38,8 @@ export default function AdminPanel() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-full mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <FileUpload />
-        </div>
+      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <AdminTabs />
       </main>
     </div>
   );

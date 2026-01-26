@@ -26,7 +26,7 @@ const header = [
   },
   {
     name: "Graphics",
-    link: "#graphic",
+    link: "/#graphic",
     icon: "",
   },
 ];

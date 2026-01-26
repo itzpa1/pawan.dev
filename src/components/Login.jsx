@@ -1,27 +1,51 @@
 "use client";
 import { useState } from "react";
 import { Card } from "./Card";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { MdHome } from "react-icons/md";
 
 export default function AdminLogin({ onLogin }) {
+  const router = useRouter();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      credentials.username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
-      credentials.password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
-    ) {
-      onLogin(true);
-    } else {
-      alert("Invalid credentials");
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        onLogin?.(true);
+        // router.replace("/admin");
+        // router.refresh();
+      } else {
+        toast.error(data.error || "Login failed");
+      }
+    } catch (err) {
+      toast.error("An error occurred during login");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-950 py-12 px-4 sm:px-6 lg:px-8 relative">
+      <Toaster position="top-center" reverseOrder={false} />
+      <button
+        onClick={() => router.replace("/")}
+        className="absolute top-4 left-4 bg-white hover:bg-white/70 text-gray-900 px-4 py-2 rounded-md font-medium flex items-center gap-2"
+      >
+        <MdHome />
+        Home
+      </button>
+
       <Card className="max-w-md w-full md:p-8 p-6 md:max-w-md">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
