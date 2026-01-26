@@ -1,4 +1,4 @@
-# 🌐 PAWAN.DEV — Developer Portfolio
+# 📃 PAWAN.DEV — Developer Portfolio
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
@@ -12,10 +12,10 @@
 </p>
 
 <p align="center">
-  🌐 <a href="https://codeitzpa1.netlify.app/">Live Website</a> • 💻 Full-Stack Dev • ⚡ Performance-Focused
+  🌐 <a href="https://codeitzpa1.vercel.app/">Live Website</a> • 💻 Full-Stack Dev • ⚡ Performance-Focused
 </p>
 
-![pawan.dev Portfolio Preview](./src//assets/preview/pawandev.png)
+![image](public/preview.png)
 
 ---
 
@@ -37,7 +37,7 @@ No fluff. Just **work, craft, and curiosity**.
 - **Framework:** Next.js
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **Deployment:** Netlify
+- **Deployment:** Vercel
 - **Tooling:** ESLint, Prettier
 
 ---
@@ -79,20 +79,20 @@ Steps:
 
 ## 🎯 Purpose
 
-* Personal branding
-* Showcasing real projects
-* Experimenting with UI & performance
-* Sharing open-source work
-* Continuous learning
+- Personal branding
+- Showcasing real projects
+- Experimenting with UI & performance
+- Sharing open-source work
+- Continuous learning
 
 ---
 
 ## 🛡️ Privacy
 
-* ❌ No user tracking
-* ❌ No data collection
-* ✅ No cookies (unless added manually)
-* ✅ Fully static & secure
+- ❌ No user tracking
+- ❌ No data collection
+- ✅ No cookies (unless added manually)
+- ✅ Fully static & secure
 
 ---
 
@@ -100,9 +100,9 @@ Steps:
 
 Built with ❤️ by **Pawan.Dev**
 
-* 🌐 Website: [https://codeitzpa1.netlify.app](https://linkdincodeitzpa1.netlify.app)
-* 🐙 GitHub: [https://github.com/itzpa1](https://github.com/itzpa1)
-* 💼 LinkedIn: [https://linkedin.com/in/itzpa1](https://linkedin.com/in/itzpa1)
+- 🌐 Website: [https://codeitzpa1.vercel.app](https://codeitzpa1.vercel.app)
+- 🐙 GitHub: [https://github.com/itzpa1](https://github.com/itzpa1)
+- 💼 LinkedIn: [https://linkedin.com/in/itzpa1](https://linkedin.com/in/itzpa1)
 
 ---
 
@@ -115,4 +115,4 @@ It helps a lot and keeps me building cool things 🚀
 
 ---
 
-> *Crafting digital experiences with code & curiosity.* ⚡
+> _Crafting digital experiences with code & curiosity._ ⚡

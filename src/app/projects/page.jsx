@@ -12,11 +12,28 @@ import { useState } from "react";
 import { FaGithub } from "react-icons/fa6";
 import { LuArrowUpRight } from "react-icons/lu";
 
+export const metadata = {
+  title: "Projects",
+  description:
+    "Official portfolio of Pawan (itzpa1). A Full-stack Developer specializing in high-performance web applications using Next.js, TypeScript, and Convex.",
+  keywords: [
+    "Pawan.Dev",
+    "itzpa1",
+    "Full-stack Developer Portfolio",
+    "Next.js Developer India",
+    "TypeScript Engineer",
+    "Convex Database Expert",
+    "Software Engineer Portfolio 2026",
+    "React Frontend Developer",
+    "Web Scalability Specialist",
+    "Tailwind CSS Expert",
+    "Portfolio",
+    "2026",
+  ],
+};
+
 const PROJECTS_PER_PAGE = 6;
 
-/* ---------------------------------------------
-   Reusable Image Component (SAFE)
---------------------------------------------- */
 function ProjectImage({ project }) {
   const [imgError, setImgError] = useState(false);
   const thumbnail = project.thumbnail || project.image;

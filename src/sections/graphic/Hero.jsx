@@ -15,7 +15,7 @@ export const LeftSection = () => {
       <div className="md:max-w-md flex flex-col items-center md:items-start pt-4 md:pt-0">
         <div className="size-[180px] relative rounded-full border-emerald-300/5 shadow-[0_0_80px_inset] shadow-emerald-300/5 flex items-center justify-center">
           <p className="md:hidden absolute left-1/2 -translate-x-1/2 top-1 font-bold text-3xl z-0 text-white/50">
-            PORTIFOLIO
+            PORTFOLIO
           </p>
           <HeroOrbit
             size={180}
