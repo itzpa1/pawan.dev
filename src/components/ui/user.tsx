@@ -102,6 +102,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
         >
           <motion.circle
             animate={controls}
+            initial="normal"
             cx="12"
             cy="8"
             r="5"
@@ -110,6 +111,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
 
           <motion.path
             animate={controls}
+            initial="normal"
             d="M20 21a8 8 0 0 0-16 0"
             transition={{
               delay: 0.2,

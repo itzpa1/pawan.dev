@@ -24,7 +24,7 @@ export const TestimonialCards = () => {
 
   return (
     <div className="mt-6 ">
-      <h1 className="uppercase font-semibold tracking-widest bg-gradient-to-r from-emerald-300 to-sky-400 text-transparent bg-clip-text text-center md:text-left py-4">
+      <h1 className="uppercase font-semibold tracking-widest bg-linear-to-r from-emerald-300 to-sky-400 text-transparent bg-clip-text text-center md:text-left py-4">
         Testimonials <span className="text-white">📩</span>
       </h1>
       <div className="flex overflow-x-clip [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] py-4 -my-4">

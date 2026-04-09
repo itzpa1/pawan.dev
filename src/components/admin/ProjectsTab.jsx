@@ -33,7 +33,7 @@ function ProjectCard({ project, onEdit, onDelete, onToggle }) {
             <span className="text-xs">No Thumbnail</span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex items-end">
           <div className="p-4 w-full">
             <div className="flex justify-between items-start">
               <h3 className="font-bold text-xl text-white truncate">
@@ -691,7 +691,7 @@ export default function ProjectsTab() {
                 <button
                   type="submit"
                   disabled={isUploading}
-                  className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                  className="px-8 py-2.5 rounded-xl bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
                 >
                   {editingId ? "Update Project" : "Add Project"}
                 </button>

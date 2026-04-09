@@ -34,7 +34,7 @@ export default function ContactPage() {
 
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-emerald-300 to-sky-400 text-transparent bg-clip-text">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 bg-linear-to-r from-emerald-300 to-sky-400 text-transparent bg-clip-text">
               Let&apos;s Connect
             </h1>
             <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
@@ -43,18 +43,18 @@ export default function ContactPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8  max-w-6xl lg:max-w-2xl mx-auto">
-            {/* Left Column: Map & Socials */}
+           
             <div className="flex flex-col gap-8">
-              {/* Map Card */}
+
               <Card className="md:h-[320px] h-[240px] p-0 relative overflow-hidden group">
                 <Image
                   src={mapImage}
                   alt="map"
-                  className="h-full w-full object-cover object-left-top transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover object-top-left transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-20 rounded-full after:content-[''] after:absolute after:inset-0 after:outline after:outline-2 after:-outline-offset-2 after:rounded-full after:outline-gray-950/30">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 -z-20 animate-ping [animation-duration:2s]"></div>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 -z-10"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-20 rounded-full after:content-[''] after:absolute after:inset-0 after:outline-2 after:-outline-offset-2 after:rounded-full after:outline-gray-950/30">
+                  <div className="absolute inset-0 rounded-full bg-linear-to-r from-emerald-300 to-sky-400 -z-20 animate-ping animation-duration-[2s]"></div>
+                  <div className="absolute inset-0 rounded-full bg-linear-to-r from-emerald-300 to-sky-400 -z-10"></div>
                   <Image
                     src={smileEmoji}
                     alt="smiling memoji"
@@ -204,7 +204,7 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="mt-auto bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-900 font-bold px-6 h-12 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/20 uppercase text-sm cursor-pointer z-50"
+                  className="mt-auto bg-linear-to-r from-emerald-300 to-sky-400 text-gray-900 font-bold px-6 h-12 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/20 uppercase text-sm cursor-pointer z-50"
                 >
                   Send Message
                   <LuArrowUpRight className="size-5" />

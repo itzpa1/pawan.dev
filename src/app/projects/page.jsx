@@ -143,7 +143,7 @@ export default function ProjectsPage() {
                             href={project.demoUrl || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10"
+                            className="flex-1 bg-linear-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10"
                           >
                             Live Site
                             <LuArrowUpRight className="size-3" />

@@ -6,14 +6,12 @@ import {
   SiZoho,
   SiWix,
   SiCanva,
-  SiAdobephotoshop,
   SiDavinciresolve,
-  SiAdobepremierepro,
   SiExpo,
   SiJavascript,
   SiPython,
   SiHtml5,
-  SiCss3,
+  SiCss,
   SiCplusplus,
   SiLatex,
   SiReact,
@@ -34,7 +32,7 @@ export const techStack = [
   { title: "JavaScript", icon: SiJavascript },
   { title: "Python", icon: SiPython },
   { title: "HTML5", icon: SiHtml5 },
-  { title: "CSS3", icon: SiCss3 },
+  { title: "CSS3", icon: SiCss },
   { title: "C++", icon: SiCplusplus },
   { title: "LaTeX", icon: SiLatex },
 
@@ -62,8 +60,8 @@ export const toolboxItems = [
   { title: "Zoho CRM", icon: SiZoho, left: "15%", top: "40%" },
   { title: "Wix", icon: SiWix, left: "50%", top: "40%" },
   { title: "Canva", icon: SiCanva, left: "60%", top: "15%" },
-  { title: "Photoshop", icon: SiAdobephotoshop, left: "10%", top: "65%" },
-  { title: "Premiere", icon: SiAdobepremierepro, left: "70%", top: "70%" },
+  { title: "Photoshop", icon: TbBrandAdobePhotoshop, left: "10%", top: "65%" },
+  { title: "Premiere", icon: TbBrandAdobePremier, left: "70%", top: "70%" },
   { title: "Expo Go", icon: SiExpo, left: "60%", top: "0%" },
   { title: "BurpSuite", icon: SiBurpsuite, left: "50%", top: "80%" },
   { title: "Kali Linux", icon: SiKalilinux, left: "0%", top: "0%" },
@@ -74,7 +72,7 @@ import todoNativeApp from "@/assets/images/todo.png";
 import getFameLandingPage from "@/assets/images/getfame.png";
 import vpnGateLandingPage from "@/assets/images/vpngate.png";
 import { BsDatabaseFillCheck } from "react-icons/bs";
-import { TbBrandReactNative } from "react-icons/tb";
+import { TbBrandReactNative, TbBrandAdobePhotoshop, TbBrandAdobePremier } from "react-icons/tb";
 
 export const Projects = [
   {

@@ -7,11 +7,35 @@ export const ClientPageWrapper = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2800);
+        let minTimePassed = false;
+        let pageLoaded = false;
 
-        return () => clearTimeout(timer);
+        const checkLoading = () => {
+            if (minTimePassed && pageLoaded) {
+                setIsLoading(false);
+            }
+        };
+
+        const timer = setTimeout(() => {
+            minTimePassed = true;
+            checkLoading();
+        }, 2500);
+
+        const handleLoad = () => {
+            pageLoaded = true;
+            checkLoading();
+        };
+
+        if (document.readyState === "complete") {
+            handleLoad();
+        } else {
+            window.addEventListener("load", handleLoad);
+        }
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener("load", handleLoad);
+        };
     }, []);
 
     return (
@@ -19,7 +43,7 @@ export const ClientPageWrapper = ({ children }) => {
             <AnimatePresence mode="wait">
                 {isLoading && <Preloader />}
             </AnimatePresence>
-            <div className={isLoading ? "hidden" : "block"}>
+            <div className={isLoading ? "invisible" : "visible"}>
                 {children}
             </div>
         </>

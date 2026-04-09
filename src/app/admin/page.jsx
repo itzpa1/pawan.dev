@@ -24,7 +24,7 @@ export default function AdminPanel() {
       <header className="w-full mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-gray-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="flex justify-between items-center py-4">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-sky-500 text-transparent bg-clip-text">
+            <h1 className="text-2xl font-bold bg-linear-to-r from-emerald-400 to-sky-500 text-transparent bg-clip-text">
               Admin Dashboard
             </h1>
           </div>

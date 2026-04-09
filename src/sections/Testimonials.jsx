@@ -30,8 +30,8 @@ export const TestimonialsSection = () => {
         title="What Clients Say about Me"
         description="Don't just take my word for it. See what my clients to say about my work."
       />
-      <div className="mt-12 lg:mt-20 flex overflow-x-clip [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] py-4 -my-4">
-        <div className="flex gap-8 pr-8 flex-none animate-move-left [animation-duration:90s] hover:[animation-play-state:paused]">
+      <div className="mt-12 lg:mt-20 flex overflow-x-clip mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] py-4 -my-4">
+        <div className="flex gap-8 pr-8 flex-none animate-move-left animation-duration-[90s] hover:animation-play-state-[paused]">
           {[...new Array(2)].fill(0).map((_, idx) => (
             <Fragment key={idx}>
               {techTestimonials.map((t) => (
@@ -40,7 +40,7 @@ export const TestimonialsSection = () => {
                   className="max-w-xs md:p-8 p-6 md:max-w-md hover:-rotate-3 transition duration-300"
                 >
                   <div className="flex gap-4 items-center">
-                    <div className="size-14 bg-gray-700 inline-flex items-center justify-center rounded-full flex-shrink-0 overflow-hidden">
+                    <div className="size-14 bg-gray-700 inline-flex items-center justify-center rounded-full shrink-0 overflow-hidden">
                       <img
                         src={t.avatarUrl}
                         alt={t.name}

@@ -6,6 +6,9 @@ import "./globals.css";
 import { twMerge } from "tailwind-merge";
 import { cn } from "@/lib/utils";
 
+
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION;
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const calistoga = Calistoga({
   subsets: ["latin"],
@@ -46,7 +49,7 @@ export const metadata: Metadata = {
     "Tailwind CSS Expert",
     "Portfolio",
     "2026",
-    "grahpic designer",
+    "graphic designer",
     "video editor",
     "content creator",
     ""
@@ -93,6 +96,9 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  verification: {
+    google: googleVerification,
   },
 };
 

@@ -11,7 +11,7 @@ export const ContactSection = () => {
   return (
     <div className="py-16 pt-12 lg:py-24 lg:pt-20" id="contact">
       <div className="container ">
-        <div className="bg-gradient-to-r from-emerald-300 to-sky-400 text-gray-900 py-8 px-10 rounded-3xl text-center md:text-left relative overflow-hidden z-20">
+        <div className="bg-linear-to-r from-emerald-300 to-sky-400 text-gray-900 py-8 px-10 rounded-3xl text-center md:text-left relative overflow-hidden z-20">
           <div
             className="absolute inset-0 opacity-5 -z-10"
             style={{
@@ -29,8 +29,8 @@ export const ContactSection = () => {
               </p>
             </div>
             {/* 3. Attach hover listeners to the Link/Button area */}
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="z-10"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}

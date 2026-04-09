@@ -69,6 +69,7 @@ const HeartIcon = forwardRef<HeartIconHandle, HeartIconProps>(
       >
         <motion.svg
           animate={controls}
+          initial="normal"
           fill="#f87171"
           height={size}
           stroke="currentColor"

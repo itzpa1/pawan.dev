@@ -197,11 +197,10 @@ export default function FileUpload() {
                           imageCategory: option.value,
                         })
                       }
-                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
-                        uploadData.imageCategory === option.value
+                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${uploadData.imageCategory === option.value
                           ? "bg-blue-600/20 border-blue-500 text-blue-400"
                           : "bg-white/5 border-white/10 text-white/40 hover:border-white/20"
-                      }`}
+                        }`}
                     >
                       {option.label}
                     </button>
@@ -254,7 +253,7 @@ export default function FileUpload() {
           <button
             type="submit"
             disabled={uploading || !selectedFile}
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:scale-100 active:scale-95"
+            className="w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:scale-100 active:scale-95"
           >
             {uploading ? (
               <div className="flex items-center justify-center gap-3">
@@ -269,11 +268,10 @@ export default function FileUpload() {
 
         {uploadResult && (
           <div
-            className={`mt-6 p-4 rounded-xl border animate-in slide-in-from-bottom-2 duration-300 ${
-              uploadResult.success
+            className={`mt-6 p-4 rounded-xl border animate-in slide-in-from-bottom-2 duration-300 ${uploadResult.success
                 ? "bg-green-500/10 border-green-500/20 text-green-400"
                 : "bg-red-500/10 border-red-500/20 text-red-400"
-            }`}
+              }`}
           >
             <div className="flex items-center gap-3">
               {uploadResult.success ? (

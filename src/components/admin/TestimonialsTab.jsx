@@ -176,7 +176,7 @@ export default function TestimonialsTab() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+                className="w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 active:scale-95"
               >
                 Launch Testimonial
               </button>
