@@ -23,7 +23,7 @@ const poppins = Poppins({
 });
 
 const rozha = Rozha_One({
-  subsets: ["devanagari", "latin"], // Devanagari is REQUIRED for Hindi
+  subsets: ["devanagari", "latin"],
   weight: ["400"],
   variable: "--font-rozha"
 });
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     siteName: "Pawan.Dev Portfolio",
     images: [
       {
-        url: "/preview.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Preview of Pawan.Dev Developer Portfolio",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     title: "Pawan.Dev | @itzpa1",
     description: "Full-stack Developer building the future with Next.js & Convex.",
     creator: "@itzpa1",
-    images: ["/preview.png"],
+    images: ["/og-image.png"],
   },
 
   robots: {
