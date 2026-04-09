@@ -5,7 +5,10 @@ import { Card } from "@/components/Card";
 import { Projects } from "@/assets/assets";
 import { CircleCheckIcon } from "@/components/ui/circle-check";
 import { ArrowUpRightIcon } from "@/components/ui/arrow-up-right";
+import { GithubIcon } from "@/components/ui/github";
 import { useState } from "react";
+import { FaExternalLinkSquareAlt } from "react-icons/fa";
+import Link from "next/link";
 
 export const ProjectsSection = () => {
   return (
@@ -40,7 +43,10 @@ export const ProjectsSection = () => {
                     ))}
                   </ul>
 
-                  <LiveSiteButton link={project.link} />
+                  <div className="flex flex-wrap gap-4 mt-8">
+                    <LiveSiteButton link={project.link} />
+                    {project.repo && <GithubButton link={project.repo} />}
+                  </div>
                 </div>
                 
                 <div className="relative">
@@ -53,6 +59,14 @@ export const ProjectsSection = () => {
               </div>
             </Card>
           ))}
+        </div>
+        <div className="w-full flex justify-center mt-12 md:mt-20">
+          <Link href="/projects">
+            <button className="inline-flex items-center gap-2 px-6 py-2 bg-linear-to-r from-emerald-300 to-sky-400 rounded-md text-gray-950 font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-lg shadow-emerald-500/20">
+              <span>Explore More Projects</span>
+              <FaExternalLinkSquareAlt className="text-gray-950" />
+            </button>
+          </Link>
         </div>
       </div>
     </section>
@@ -82,10 +96,30 @@ const LiveSiteButton = ({ link }) => {
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="w-full md:w-auto"
     >
-      <button className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8 cursor-pointer active:scale-95 transition-all">
+      <button className="bg-white text-gray-950 h-12 w-full px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
         <ArrowUpRightIcon size={16} isTriggered={hovered} />
         <span>Visit Live Site</span>
+      </button>
+    </a>
+  );
+};
+
+const GithubButton = ({ link }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a 
+      href={link} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="w-full md:w-auto"
+    >
+      <button className="bg-gray-900 text-white border border-white/10 h-12 w-full px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 cursor-pointer hover:bg-white/10 active:scale-95 transition-all">
+        <GithubIcon size={18} isTriggered={hovered} />
+        <span>View Repo</span>
       </button>
     </a>
   );

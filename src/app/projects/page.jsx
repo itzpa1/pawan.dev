@@ -9,10 +9,44 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
-import { FaGithub } from "react-icons/fa6";
-import { LuArrowUpRight } from "react-icons/lu";
+import { GithubIcon } from "@/components/ui/github";
+import { ArrowUpRightIcon } from "@/components/ui/arrow-up-right";
 
 const PROJECTS_PER_PAGE = 6;
+
+function RepoButton({ url }) {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex-1 bg-white/5 hover:bg-white/10 text-white h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-semibold transition-all border border-white/10"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <GithubIcon size={18} isTriggered={isHovered} />
+      Repo
+    </a>
+  );
+}
+
+function LiveButton({ url }) {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <a
+      href={url || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex-1 bg-linear-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      Live Site
+      <ArrowUpRightIcon size={16} isTriggered={isHovered} />
+    </a>
+  );
+}
 
 function ProjectImage({ project }) {
   const [imgError, setImgError] = useState(false);
@@ -124,30 +158,14 @@ export default function ProjectsPage() {
 
                         <div className="flex gap-3 mt-auto">
                           {project.repoUrl ? (
-                            <a
-                              href={project.repoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 bg-white/5 hover:bg-white/10 text-white h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-semibold transition-all border border-white/10"
-                            >
-                              <FaGithub className="size-4" />
-                              Repo
-                            </a>
+                            <RepoButton url={project.repoUrl} />
                           ) : (
                             <div className="flex-1 text-white/20 h-11 rounded-xl inline-flex items-center justify-center text-[10px] font-bold border border-white/5 uppercase">
                               Private
                             </div>
                           )}
 
-                          <a
-                            href={project.demoUrl || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 bg-linear-to-r from-emerald-300 to-sky-400 text-gray-950 h-11 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/10"
-                          >
-                            Live Site
-                            <LuArrowUpRight className="size-3" />
-                          </a>
+                          <LiveButton url={project.demoUrl} />
                         </div>
                       </div>
                     </Card>

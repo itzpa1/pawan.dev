@@ -19,7 +19,7 @@ export const ClientPageWrapper = ({ children }) => {
         const timer = setTimeout(() => {
             minTimePassed = true;
             checkLoading();
-        }, 2500);
+        }, 3800);
 
         const handleLoad = () => {
             pageLoaded = true;
