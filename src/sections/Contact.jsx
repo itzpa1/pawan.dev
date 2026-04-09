@@ -1,9 +1,13 @@
 "use client";
 import grainImage from "@/assets/images/grain.jpg";
+import { ArrowUpRightIcon } from "@/components/ui/arrow-up-right";
 import Link from "next/link";
-import { LuArrowUpRight } from "react-icons/lu";
+import { useState } from "react"; // 1. Import useState
 
 export const ContactSection = () => {
+  // 2. Setup the hover state
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div className="py-16 pt-12 lg:py-24 lg:pt-20" id="contact">
       <div className="container ">
@@ -24,10 +28,16 @@ export const ContactSection = () => {
                 discuss how I can help you achieve goals.
               </p>
             </div>
-            <Link href="/contact" className="z-10">
-              <button className="text-white bg-gray-900 inline-flex items-center px-6 h-12 rounded-xl gap-2 w-max border border-gray-900 cursor-pointer">
+            {/* 3. Attach hover listeners to the Link/Button area */}
+            <Link 
+              href="/contact" 
+              className="z-10"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <button className="text-white bg-gray-900 inline-flex items-center px-6 h-12 rounded-xl gap-2 w-max border border-gray-900 cursor-pointer active:scale-95 transition-all">
                 <span className="font-semibold ">Contact Me</span>
-                <LuArrowUpRight className="size-4" />
+                <ArrowUpRightIcon size={16} isTriggered={isHovered} />
               </button>
             </Link>
           </div>

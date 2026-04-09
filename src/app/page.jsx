@@ -7,6 +7,7 @@ import { ProjectsSection } from "@/sections/Projects";
 import { GraphicsSection } from "@/sections/Graphic";
 import { TapeSection } from "@/sections/Tape";
 import { TestimonialsSection } from "@/sections/Testimonials";
+import { ClientPageWrapper } from "@/components/ClientPageWrapper"
 
 export const metadata = {
   title: "Portfolio",
@@ -69,7 +70,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div>
+    <ClientPageWrapper>
       <Header />
       <HeroSection />
       <ProjectsSection />
@@ -79,6 +80,6 @@ export default function Home() {
       <GraphicsSection />
       <ContactSection />
       <Footer />
-    </div>
+    </ClientPageWrapper>
   );
 }

@@ -1,11 +1,12 @@
+"use client";
 import Image from "next/image";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Card } from "@/components/Card";
 import { Projects } from "@/assets/assets";
-import Link from "next/link";
-import { FaExternalLinkSquareAlt } from "react-icons/fa";
-import { MdCheckCircleOutline } from "react-icons/md";
-import { LuArrowUpRight } from "react-icons/lu";
+import { CircleCheckIcon } from "@/components/ui/circle-check";
+import { ArrowUpRightIcon } from "@/components/ui/arrow-up-right";
+import { useState } from "react";
+
 export const ProjectsSection = () => {
   return (
     <section className="pb-16 lg:py-24" id="project">
@@ -20,40 +21,28 @@ export const ProjectsSection = () => {
             <Card
               key={project.title}
               className="px-8 pt-8 pb-0 md:pt-12 md:px-10 lg:pt-16 lg:px-20 sticky"
-              style={{
-                top: `calc(64px + ${projectIndex * 40}px)`,
-              }}
+              style={{ top: `calc(64px + ${projectIndex * 40}px)` }}
             >
               <div className="lg:grid lg:grid-cols-2 lg:gap-16">
                 <div className="lg:pb-16">
+                  {/* ... Header Content ... */}
                   <div className="bg-gradient-to-r from-emerald-300 to-sky-400 inline-flex gap-2 font-bold uppercase tracking-widest text-sm text-transparent bg-clip-text">
                     <span>{project.company}</span>
                     <span>&bull;</span>
                     <span>{project.year}</span>
                   </div>
-
-                  <h3 className="font-serif text-2xl mt-2 md:mt-5 md:text-4xl ">
-                    {project.title}
-                  </h3>
+                  <h3 className="font-serif text-2xl mt-2 md:mt-5 md:text-4xl">{project.title}</h3>
                   <hr className="border-t-2 border-white/5 mt-4 md:mt-5 " />
+                  
                   <ul className="flex flex-col gap-4 mt-4 md:mt-5">
                     {project.results.map((result) => (
-                      <li
-                        className="flex gap-2 text-sm md:text-base text-white/50 "
-                        key={result.title}
-                      >
-                        <MdCheckCircleOutline className="size-5 md:size-6" />
-                        <span>{result.title}</span>
-                      </li>
+                      <ResultItem key={result.title} title={result.title} />
                     ))}
                   </ul>
-                  <a href={project.link}>
-                    <button className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8 cursor-pointer">
-                      <LuArrowUpRight className="size-4" />
-                      <span>Visit Live Site</span>
-                    </button>
-                  </a>
+
+                  <LiveSiteButton link={project.link} />
                 </div>
+                
                 <div className="relative">
                   <Image
                     src={project.image}
@@ -65,19 +54,39 @@ export const ProjectsSection = () => {
             </Card>
           ))}
         </div>
-
-        {/* View All Projects Button */}
-        <div className="w-full flex justify-center mt-6">
-          <Link href="/projects">
-            <button className="inline-flex items-center gap-2 px-3 md:px-6 bg-gradient-to-r from-emerald-300 to-sky-400 rounded-lg py-1 md:py-2 cursor-pointer">
-              <span className="font-medium text-gray-950">
-                View All Projects
-              </span>
-              <FaExternalLinkSquareAlt className="text-gray-950" />
-            </button>
-          </Link>
-        </div>
       </div>
     </section>
+  );
+};
+
+const ResultItem = ({ title }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <li
+      className="flex gap-2 text-sm md:text-base text-white/50 cursor-default transition-colors hover:text-white"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <CircleCheckIcon size={20} isTriggered={hovered} />
+      <span>{title}</span>
+    </li>
+  );
+};
+
+const LiveSiteButton = ({ link }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a 
+      href={link} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <button className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8 cursor-pointer active:scale-95 transition-all">
+        <ArrowUpRightIcon size={16} isTriggered={hovered} />
+        <span>Visit Live Site</span>
+      </button>
+    </a>
   );
 };

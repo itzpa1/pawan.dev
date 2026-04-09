@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, Calistoga } from "next/font/google";
+import { Inter, Calistoga, Poppins, Rozha_One } from "next/font/google";
 import { ConvexClientProvider } from "@/providers";
 import ScrollToTop from "@/components/ScrollToTop";
 import "./globals.css";
 import { twMerge } from "tailwind-merge";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const calistoga = Calistoga({
   subsets: ["latin"],
   variable: "--font-serif",
   weight: ["400"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-poppins"
+});
+
+const rozha = Rozha_One({
+  subsets: ["devanagari", "latin"], // Devanagari is REQUIRED for Hindi
+  weight: ["400"],
+  variable: "--font-rozha"
 });
 
 export const metadata: Metadata = {
@@ -17,9 +30,9 @@ export const metadata: Metadata = {
     template: "%s | Pawan.Dev",
     default: "Portfolio | Pawan.dev",
   },
-  
+
   description: "Official portfolio of Pawan (itzpa1). A Full-stack Developer specializing in high-performance web applications using Next.js, TypeScript, and Convex.",
-  
+
   keywords: [
     "Pawan.Dev",
     "itzpa1",
@@ -38,7 +51,7 @@ export const metadata: Metadata = {
     "content creator",
     ""
   ],
-  
+
   authors: [{ name: "Pawan Dev", url: "https://linkedin.com/in/itzpa1" }],
   creator: "Pawan",
   publisher: "Pawan",
@@ -89,11 +102,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", inter.variable)}>
       <body
         className={twMerge(
           inter.variable,
           calistoga.variable,
+          poppins.variable,
+          rozha.variable,
           "bg-gray-900 text-white antialiased font-sans ",
         )}
       >

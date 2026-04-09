@@ -7,8 +7,10 @@ import SparkleIcon from "@/assets/icons/sparkle.svg";
 import { HeroOrbit } from "@/components/HeroOrbit";
 import { useEffect, useState } from "react";
 import { MdArrowDownward } from "react-icons/md";
+import { FileTextIcon } from "@/components/ui/file-text";
 export const HeroSection = () => {
   const [resumeUrl, setResumeUrl] = useState("/resume.pdf");
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchResume = async () => {
@@ -154,9 +156,11 @@ export const HeroSection = () => {
             download
             target="_blank"
             rel="noopener noreferrer"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className="inline-flex items-center gap-2 border-white bg-white text-gray-900 h-12 px-6 rounded-xl cursor-pointer z-20"
           >
-            <span>📄</span>
+            <FileTextIcon size={18} isTriggered={isHovered} />
             <span className="font-semibold">My Resume</span>
           </a>
         </div>

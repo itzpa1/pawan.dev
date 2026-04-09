@@ -61,13 +61,12 @@ export const toolboxItems = [
   { title: "Postman", icon: SiPostman, left: "65%", top: "20%" },
   { title: "Zoho CRM", icon: SiZoho, left: "15%", top: "40%" },
   { title: "Wix", icon: SiWix, left: "50%", top: "40%" },
-  { title: "Canva", icon: SiCanva, left: "75%", top: "45%" },
+  { title: "Canva", icon: SiCanva, left: "60%", top: "15%" },
   { title: "Photoshop", icon: SiAdobephotoshop, left: "10%", top: "65%" },
-  { title: "DaVinci Resolve", icon: SiDavinciresolve, left: "40%", top: "70%" },
   { title: "Premiere", icon: SiAdobepremierepro, left: "70%", top: "70%" },
-  { title: "Expo Go", icon: SiExpo, left: "60%", top: "85%" },
-  { title: "BurpSuite", icon: SiBurpsuite, left: "80%", top: "80%" },
-  { title: "Kali Linux", icon: SiKalilinux, left: "10%", top: "90%" },
+  { title: "Expo Go", icon: SiExpo, left: "60%", top: "0%" },
+  { title: "BurpSuite", icon: SiBurpsuite, left: "50%", top: "80%" },
+  { title: "Kali Linux", icon: SiKalilinux, left: "0%", top: "0%" },
 ];
 
 import darpanLandingPage from "@/assets/images/darpan.png";
